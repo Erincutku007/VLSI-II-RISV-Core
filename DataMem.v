@@ -29,9 +29,9 @@ module DataMem #(parameter MEM_DEPTH=4)(
     input [2:0]wr_strb,
     output [31:0]rd_dout0
     );
-    wire [31:0]memory_read_val_raw,memory_read_val_shifted,memory_write_val_shifted;
+    wire [31:0]memory_read_val_raw,memory_read_val_shifted,memory_write_val_shifted,mem_write_in;
     wire [1:0]byte_index;
-    reg  [31:0]mem_read_out,mem_write_in;
+    reg  [31:0]mem_read_out;
     
     mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH)) dmem(
     .clk(clk),
@@ -66,47 +66,13 @@ module DataMem #(parameter MEM_DEPTH=4)(
                 mem_read_out = {{24{memory_read_val_shifted[7]}},memory_read_val_shifted[7:0]};
             end
             else begin          //else we are in the half word mode
-                mem_read_out = {{16{memory_read_val_shifted[7]}},memory_read_val_shifted[15:0]};
+                mem_read_out = {{16{memory_read_val_shifted[15]}},memory_read_val_shifted[15:0]};
             end
         end
     end
     
     assign memory_write_val_shifted = wr_din0 << byte_index;
     
-    always @(*) begin
-        if (isUint) begin //UInt case
-            if (mode[0]) begin //if mode[0] we are in the byte mode
-                case (byte_index)
-                    2'b00: mem_write_in = {24'd0,memory_write_val_shifted[7:0]};
-                    2'b01: mem_write_in = {16'd0,memory_write_val_shifted[7:0],8'd0};
-                    2'b10: mem_write_in = {8'd0,memory_write_val_shifted[7:0],16'd0};
-                    2'b11: mem_write_in = {memory_write_val_shifted[7:0],24'd0};
-                endcase 
-            end
-            else begin          //else we are in the half word mode
-                if (byte_index[1]) 
-                    mem_write_in = {memory_read_val_shifted[15:0],16'd0};
-                else
-                    mem_write_in = {16'd0,memory_read_val_shifted[15:0]};
-            end
-        end
-        else begin //SInt case
-            if (mode[0]) begin //if mode[0] we are in the byte mode
-                case (byte_index)
-                    2'b00: mem_write_in = {{24{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0]};
-                    2'b01: mem_write_in = {{16{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0],8'd0};
-                    2'b10: mem_write_in = {{8{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0],16'd0};
-                    2'b11: mem_write_in = {memory_write_val_shifted[7:0],24'd0};
-                endcase 
-            end
-            else begin          //else we are in the half word mode
-                if (byte_index[1]) 
-                    mem_write_in = {memory_read_val_shifted[15:0],16'd0};
-                else
-                    mem_write_in = {{16{memory_read_val_shifted[15]}},memory_read_val_shifted[15:0]};
-            end
-        end
-    end
-    
+    assign mem_write_in = memory_write_val_shifted;
     assign rd_dout0 = mem_read_out;
 endmodule
