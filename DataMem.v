@@ -1,0 +1,112 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04/11/2024 02:21:19 PM
+// Design Name: 
+// Module Name: DataMem
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module DataMem #(parameter MEM_DEPTH=4)(
+    input clk,
+    input rst,
+    input [31:0]rd_addr0,wr_addr0,
+    input [31:0]wr_din0,
+    input we0,
+    input [2:0]wr_strb,
+    output [31:0]rd_dout0
+    );
+    wire [31:0]memory_read_val_raw,memory_read_val_shifted,memory_write_val_shifted;
+    wire [1:0]byte_index;
+    reg  [31:0]mem_read_out,mem_write_in;
+    
+    mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH)) dmem(
+    .clk(clk),
+    .rst(rst),
+    .rd_addr0({rd_addr0[31:2],2'h0}),
+    .wr_addr0({wr_addr0[31:2],2'h0}),
+    .wr_din0(mem_write_in),
+    .we0(we0),
+    .rd_dout0(memory_read_val_raw)
+    );
+    wire [1:0]mode = wr_strb[1:0];
+    wire isUint = wr_strb[2];
+    // mode = 00 -> byte
+    // mode = 01 -> hw
+    // mode = 10 -> hw
+    // isuint =1 -> Unsigned L/S
+    
+    assign byte_index = rd_addr0[1:0];
+    assign memory_read_val_shifted = memory_read_val_raw >> byte_index;
+    
+    always @(*) begin
+        if (isUint) begin
+            if (mode[0]) begin //if mode[0] we are in the byte mode
+                mem_read_out = {24'd0,memory_read_val_shifted[7:0]};
+            end
+            else begin          //else we are in the half word mode
+                mem_read_out = {16'd0,memory_read_val_shifted[15:0]};
+            end
+        end
+        else begin
+            if (mode[0]) begin //if mode[0] we are in the byte mode
+                mem_read_out = {{24{memory_read_val_shifted[7]}},memory_read_val_shifted[7:0]};
+            end
+            else begin          //else we are in the half word mode
+                mem_read_out = {{16{memory_read_val_shifted[7]}},memory_read_val_shifted[15:0]};
+            end
+        end
+    end
+    
+    assign memory_write_val_shifted = wr_din0 << byte_index;
+    
+    always @(*) begin
+        if (isUint) begin //UInt case
+            if (mode[0]) begin //if mode[0] we are in the byte mode
+                case (byte_index)
+                    2'b00: mem_write_in = {24'd0,memory_write_val_shifted[7:0]};
+                    2'b01: mem_write_in = {16'd0,memory_write_val_shifted[7:0],8'd0};
+                    2'b10: mem_write_in = {8'd0,memory_write_val_shifted[7:0],16'd0};
+                    2'b11: mem_write_in = {memory_write_val_shifted[7:0],24'd0};
+                endcase 
+            end
+            else begin          //else we are in the half word mode
+                if (byte_index[1]) 
+                    mem_write_in = {memory_read_val_shifted[15:0],16'd0};
+                else
+                    mem_write_in = {16'd0,memory_read_val_shifted[15:0]};
+            end
+        end
+        else begin //SInt case
+            if (mode[0]) begin //if mode[0] we are in the byte mode
+                case (byte_index)
+                    2'b00: mem_write_in = {{24{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0]};
+                    2'b01: mem_write_in = {{16{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0],8'd0};
+                    2'b10: mem_write_in = {{8{memory_read_val_shifted[15]}},memory_write_val_shifted[7:0],16'd0};
+                    2'b11: mem_write_in = {memory_write_val_shifted[7:0],24'd0};
+                endcase 
+            end
+            else begin          //else we are in the half word mode
+                if (byte_index[1]) 
+                    mem_write_in = {memory_read_val_shifted[15:0],16'd0};
+                else
+                    mem_write_in = {{16{memory_read_val_shifted[15]}},memory_read_val_shifted[15:0]};
+            end
+        end
+    end
+    
+    assign rd_dout0 = mem_read_out;
+endmodule
