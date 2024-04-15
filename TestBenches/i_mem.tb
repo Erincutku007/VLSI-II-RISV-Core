@@ -1,0 +1,61 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 04/01/2024 10:19:01 PM
+// Design Name: 
+// Module Name: ram_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module imem_tb(
+
+    );
+    reg clk,rst,we0;
+    reg [31:0]rd_addr0,wr_addr0;
+    reg [31:0]wr_din0;
+    wire [31:0]rd_dout0;
+    i_mem DUT (
+        .clk(clk),
+        .rst(rst),
+        .rd_addr0(rd_addr0),
+        .wr_addr0(wr_addr0),
+        .wr_din0(wr_din0),
+        .we0(we0),
+        .rd_dout0(rd_dout0)
+    );
+    always
+        begin
+        clk = 0;
+        forever #10 clk = ~clk;
+    end
+    
+    initial begin
+        rst = 1;
+        we0 = 0;
+        rd_addr0=0;
+        wr_addr0=0;
+        #10;
+    end
+    
+    always@(posedge clk) begin
+        if (rd_dout0===32'hXXXX_XXXX)
+            $finish();
+        else
+            rd_addr0 = rd_addr0+4;
+            #1;
+    end
+    
+endmodule
