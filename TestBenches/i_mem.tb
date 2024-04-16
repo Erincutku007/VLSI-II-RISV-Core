@@ -41,21 +41,17 @@ module imem_tb(
         clk = 0;
         forever #10 clk = ~clk;
     end
-    
+    integer i;
     initial begin
         rst = 1;
         we0 = 0;
         rd_addr0=0;
         wr_addr0=0;
         #10;
-    end
-    
-    always@(posedge clk) begin
-        if (rd_dout0===32'hXXXX_XXXX)
-            $finish();
-        else
-            rd_addr0 = rd_addr0+4;
-            #1;
+    for (i=0;i<16;i=i+1) begin
+            rd_addr0=i*4;
+            #10;
+        end
     end
     
 endmodule

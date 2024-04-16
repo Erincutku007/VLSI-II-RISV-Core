@@ -29,7 +29,7 @@ module i_mem(
         output [31:0]rd_dout0
     );
     
-    mem_1r1w #(32,128,1) iram(
+    mem_1r1w #(32,16,1) iram(
         .clk(clk),
         .rst(rst),
         .rd_addr0(rd_addr0[6:0]),

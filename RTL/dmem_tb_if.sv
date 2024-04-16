@@ -4,11 +4,11 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++
 interface mem_if (input wire clk);
         logic rst;
-        logic [3:0]rd_addr0;
-        logic [3:0]wr_addr0;
+        logic [31:0]rd_addr0;
+        logic [31:0]wr_addr0;
         logic [31:0]wr_din0;
         logic we0;
-        logic [1:0]wr_strb;
+        logic [2:0]wr_strb;
         logic [31:0]rd_dout0;
   //=================================================
   // Modport for System interface 
@@ -55,7 +55,9 @@ endmodule
 //  Memory Controller
 //+++++++++++++++++++++++++++++++++++++++++++++++++
 module memory_ctrl #(MEM_DEPTH=16) (mem_if.system sif);
-    integer i;
+    integer i,strb;
+    typedef enum {sbyte,halfword,word} strb_dat;
+    strb_dat mode;
     initial begin
         sif.rst = 0;
         sif.we0 = 0;
@@ -67,8 +69,17 @@ module memory_ctrl #(MEM_DEPTH=16) (mem_if.system sif);
         sif.rst = 1;
         sif.we0 = 1;
         for (i = 0;i<MEM_DEPTH;i++) begin
-            @(negedge sif.clk);
-            
+            sif.wr_din0  =i;
+            strb = i%3;
+            sif.wr_addr0 =4*i+strb;
+            case(strb) 
+                3: mode = sbyte;
+                2: mode = halfword;
+                1: mode = sbyte;
+                0: mode = word;
+            endcase
+            sif.wr_strb = mode;
+            #20;
         end
     end
 endmodule

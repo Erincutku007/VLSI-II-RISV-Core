@@ -23,7 +23,7 @@
 module DataMem #(parameter MEM_DEPTH=4)(
     input clk,
     input rst,
-    input [$clog2(MEM_DEPTH)-1:0]rd_addr0,wr_addr0,
+    input [$clog2(MEM_DEPTH)+1:0]rd_addr0,wr_addr0,
     input [31:0]wr_din0,
     input we0,
     input [2:0]wr_strb,
@@ -32,8 +32,9 @@ module DataMem #(parameter MEM_DEPTH=4)(
     wire [31:0]memory_read_val_raw,memory_read_val_shifted,memory_write_val_shifted,mem_write_in;
     wire [1:0]byte_index;
     reg  [31:0]mem_read_out;
-    wire [4:0]shamt;
-    localparam adr_width = $clog2(MEM_DEPTH);
+    wire [1:0]byte_index_r,byte_index_w;
+    wire [4:0]shamt_r,shamt_w;
+    localparam adr_width = $clog2(MEM_DEPTH)+2;
     mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH)) dmem(
     .clk(clk),
     .rst(rst),
@@ -50,9 +51,11 @@ module DataMem #(parameter MEM_DEPTH=4)(
     // mode = 10 -> hw
     // isuint =1 -> Unsigned L/S
     
-    assign byte_index = rd_addr0[1:0];
-    assign shamt = (byte_index << 3);
-    assign memory_read_val_shifted = memory_read_val_raw >> shamt;
+    assign byte_index_r = rd_addr0[1:0];
+    assign byte_index_w = wr_addr0[1:0];
+    assign shamt_r = (byte_index_r << 3);
+    assign shamt_w = (byte_index_w << 3);
+    assign memory_read_val_shifted = memory_read_val_raw >> shamt_r;
     
     always @(*) begin
         if (isUint) begin
@@ -73,7 +76,7 @@ module DataMem #(parameter MEM_DEPTH=4)(
         end
     end
     
-    assign memory_write_val_shifted = wr_din0 << shamt;
+    assign memory_write_val_shifted = wr_din0 << shamt_w;
     
     assign mem_write_in = memory_write_val_shifted;
     assign rd_dout0 = mem_read_out;
