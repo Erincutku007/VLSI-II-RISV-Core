@@ -46,7 +46,8 @@ module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,IS_I_MEM = 0)(
         rd_dout0 = ram_block[read_adr];
     end
     
-    initial
+    initial begin
         if (IS_I_MEM)
             $readmemh("program.mem",ram_block);
+     end
 endmodule

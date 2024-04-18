@@ -52,6 +52,11 @@ module imem_tb(
             rd_addr0=i*4;
             #10;
         end
+        #10;
+        wr_addr0=0;
+        we0 = 1;
+        wr_din0 = 31;
+        rd_addr0=0;
     end
     
 endmodule
