@@ -30,7 +30,6 @@ module DataMem #(parameter MEM_DEPTH=4)(
     output [31:0]rd_dout0
     );
     wire [31:0]memory_read_val_raw,memory_read_val_shifted,memory_write_val_shifted,mem_write_in;
-    wire [1:0]byte_index;
     reg  [31:0]mem_read_out;
     wire [1:0]byte_index_r,byte_index_w;
     wire [4:0]shamt_r,shamt_w;

@@ -81,6 +81,36 @@ module memory_ctrl #(MEM_DEPTH=16) (mem_if.system sif);
             sif.wr_strb = mode;
             #20;
         end
+        #20;
+        sif.we0 = 0;
+        #20;
+        for (i = 0;i<MEM_DEPTH;i++) begin
+            strb = i%3;
+            sif.rd_addr0 = 4*i+strb;
+            case(strb) 
+                3: mode = sbyte;
+                2: mode = halfword;
+                1: mode = sbyte;
+                0: mode = word;
+            endcase
+            sif.wr_strb = mode;
+            sif.wr_strb[2] = 1'b0;
+            #20;
+        end
+        #20;
+        for (i = 0;i<MEM_DEPTH;i++) begin
+            strb = i%3;
+            sif.rd_addr0 = 4*i+strb;
+            case(strb) 
+                3: mode = sbyte;
+                2: mode = halfword;
+                1: mode = sbyte;
+                0: mode = word;
+            endcase
+            sif.wr_strb = mode;
+            sif.wr_strb[2] = 1'b1;
+            #20;
+        end
     end
 endmodule
 

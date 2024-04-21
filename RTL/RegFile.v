@@ -36,10 +36,10 @@ module RegFile#(parameter WIDTH = 32,parameter ADRESS_WIDTH = 5,parameter DEPTH 
                 ram_block[i] = 0;
             end
         end
-        else if (we0 & wr_addr0 != 0)
+        else if (we0 & (wr_addr0 != 5'd0))
             ram_block[wr_addr0] <= wr_din0;
     end
-    
+    wire test = we0 & (wr_addr0 != 0);
     always @(*) begin
         rd_dout0 = ram_block[rd_addr0];
         rd_dout1 = ram_block[rd_addr1];

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 04/01/2024 10:19:01 PM
+// Create Date: 04/18/2024 10:57:43 AM
 // Design Name: 
-// Module Name: ram_tb
+// Module Name: regfile_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,43 +20,42 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module imem_tb(
-
+module regfile_tb(
     );
     reg clk,rst,we0;
-    reg [31:0]rd_addr0,wr_addr0;
+    wire [31:0]rd_dout0,rd_dout1;
     reg [31:0]wr_din0;
-    wire [31:0]rd_dout0;
-    i_mem DUT (
+    reg [4:0]wr_addr0,rd_addr1,rd_addr0;
+    initial clk = 0;
+    always #10 clk++;
+    RegFile DUT(
         .clk(clk),
         .rst(rst),
         .rd_addr0(rd_addr0),
+        .rd_addr1(rd_addr1),
         .wr_addr0(wr_addr0),
         .wr_din0(wr_din0),
         .we0(we0),
-        .rd_dout0(rd_dout0)
+        .rd_dout0(rd_dout0),
+        .rd_dout1(rd_dout1)
     );
-    always
-        begin
-        clk = 0;
-        forever #10 clk = ~clk;
-    end
     integer i;
     initial begin
+        rst = 0;
+        #30;
         rst = 1;
-        we0 = 0;
-        rd_addr0=0;
-        wr_addr0=0;
-        #10;
-    for (i=0;i<16;i=i+1) begin
-            rd_addr0=i*4;
-            #10;
-        end
-        #10;
-        wr_addr0=0;
         we0 = 1;
-        wr_din0 = 31;
-        rd_addr0=0;
+        #20;
+        for(i=0;i<32;i=i+1) begin
+            wr_addr0 = i;
+            wr_din0 = i;
+            #20;
+        end
+        #20;
+        for(i=0;i<16;i=i+1) begin
+            rd_addr0 = i*2;
+            rd_addr1 = (i+1)*2;
+            #20;
+        end
     end
-    
 endmodule
