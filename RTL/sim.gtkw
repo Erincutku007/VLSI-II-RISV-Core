@@ -1,0 +1,29 @@
+[*]
+[*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
+[*] Sun Apr 21 09:12:19 2024
+[*]
+[dumpfile] "/Users/mustafa/OpenLane/designs/inst_mem/i_mem_TB.vcd"
+[dumpfile_mtime] "Sat Apr 20 14:31:19 2024"
+[dumpfile_size] 2168601609
+[savefile] "/Users/mustafa/OpenLane/designs/inst_mem/sim.gtkw"
+[timestart] 0
+[size] 1113 640
+[pos] 70 73
+*-13.332147 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] i_mem_tb.
+[treeopen] i_mem_tb.DUT.
+[sst_width] 193
+[signals_width] 158
+[sst_expanded] 1
+[sst_vpaned_height] 181
+@28
+i_mem_tb.we0
+i_mem_tb.DUT.iram.clk
+i_mem_tb.DUT.iram.rd_dout0[31:0]
+@22
+i_mem_tb.DUT.iram.rd_addr0[8:0]
+i_mem_tb.DUT.iram.wr_addr0[8:0]
+@23
+i_mem_tb.DUT.iram.wr_din0[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

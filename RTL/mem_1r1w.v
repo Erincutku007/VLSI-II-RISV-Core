@@ -49,5 +49,4 @@ module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,IS_I_MEM = 0)(
     initial begin
         if (IS_I_MEM)
             $readmemh("program.mem",ram_block);
-     end
 endmodule
