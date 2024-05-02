@@ -24,7 +24,7 @@ module MemStage(
         input clk,rst,
         input wire [31:0]calculated_adr,pc_plus_4_ex,ALU_result,regfileb_ex,
         input wire [15:0]control_word_ex,
-        output wire [31:0] mem_data_out,
+        output wire [31:0] mem_data_out,target_pc,
         output wire [3:0]control_word_mem
     );
     wire branch_taken,rf_wb,mem_we,pc_src,funct3,pc_src_mem;
@@ -44,4 +44,5 @@ module MemStage(
     //new control word
     assign pc_src_mem = branch_taken & pc_src;
     assign control_word_mem = {rf_wb,wb_src,pc_src_mem};
+    assign target_pc = calculated_adr;
 endmodule
