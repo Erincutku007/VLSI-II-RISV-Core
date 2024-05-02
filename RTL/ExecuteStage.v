@@ -34,7 +34,7 @@ module ExecuteStage(
     
     wire [31:0]A,B,alu_result,adr_adder_a_input;
     wire [2:0]funct3,funct3_masked;
-    wire [6:0]funct7;
+    wire [6:0]funct7,funct7_masked;
     wire [3:0]alu_flags;
     //deconstructing control word
     assign {b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,funct3,funct7} = control_word_dec;
@@ -42,6 +42,7 @@ module ExecuteStage(
     assign A = regfilea;
     assign B = b_src ? imm : regfileb;
     assign funct3_masked = is_branch ? 32'b0 : funct3;
+    assign funct7_masked = funct7 & {1'b0,is_branch,5'b0};
     assign address_adder_a = adr_adder_a ? pc_dec : regfilea;
     ALU(
     .funct7(funct7),
