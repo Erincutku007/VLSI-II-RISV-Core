@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 
 module Shifter(
-        input [31:0]a,
-        input [4:0]b,
+        input signed [31:0]a,
+        input signed [4:0]b,
         input mode,
         input sel,
-        output [31:0]y
+        output signed [31:0]y
     );
     wire [31:0] right_shift, left_shift;
 
