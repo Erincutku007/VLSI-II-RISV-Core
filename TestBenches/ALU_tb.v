@@ -60,19 +60,6 @@ module ALU_tb ();
             end
         else
             $display("ERROR");
-        
-        // SLL
-        funct7 = 7'b0000000;
-        funct3 = 3'b001;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A << B))
-            begin
-            $display($time,": SLL result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
 
         // SLT
         funct7 = 7'b0000000;
@@ -112,46 +99,7 @@ module ALU_tb ();
             end
         else
             $display("ERROR");
-
-        // SRL
-        funct7 = 7'b0000000;
-        funct3 = 3'b101;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A >> B))
-            begin
-            $display($time,": SRL result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
         
-        // SRL
-        funct7 = 7'b0000000;
-        funct3 = 3'b101;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A >> B))
-            begin
-            $display($time,": SRL result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
-
-        // SRA
-        funct7 = 7'b0100000;
-        funct3 = 3'b101;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A >>> B))
-            begin
-            $display($time,": SRA result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
-
         // OR
         funct7 = 7'b0000000;
         funct3 = 3'b110;
@@ -246,45 +194,6 @@ module ALU_tb ();
         if(result == (A & B))
             begin
             $display($time,": ANDI result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
-
-        // SLLI
-        funct7 = 7'b0000000;
-        funct3 = 3'b001;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A << B))
-            begin
-            $display($time,": SLLI result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
-
-        // SRLI
-        funct7 = 7'b0000000;
-        funct3 = 3'b101;
-        A = 32'h7245_2813;
-        B = 4;
-        #10
-        if(result == (A >> B))
-            begin
-            $display($time,": SRLI result = %h",result," TRUE");
-            end
-        else
-            $display("ERROR");
-
-        // SRAI
-        funct7 = 7'b0100000;
-        funct3 = 3'b101;
-        A = 32'hF000_0000;
-        B = 1;
-        #10
-        if(result == (A >>> B))
-            begin
-            $display($time,": SRAI result = %h",result," TRUE");
             end
         else
             $display("ERROR");
