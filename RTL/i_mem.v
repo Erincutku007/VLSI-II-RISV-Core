@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-`include "mem_1r1w.v"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -21,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module i_mem #(parameter WIDTH = 32,parameter DEPTH = 4)(
+module i_mem(
         input clk,
         input rst,
         input [31:0]rd_addr0,wr_addr0,
@@ -30,11 +29,11 @@ module i_mem #(parameter WIDTH = 32,parameter DEPTH = 4)(
         output [31:0]rd_dout0
     );
     
-    mem_1r1w #(WIDTH,DEPTH,1) iram(
+    mem_1r1w #(32,16,1) iram(
         .clk(clk),
         .rst(rst),
-        .rd_addr0(rd_addr0[$clog2(DEPTH)+1:0]),
-        .wr_addr0(wr_addr0[$clog2(DEPTH)+1:0]),
+        .rd_addr0(rd_addr0[6:0]),
+        .wr_addr0(wr_addr0[6:0]),
         .wr_din0(wr_din0),
         .we0(we0),
         .rd_dout0(rd_dout0)

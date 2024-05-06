@@ -27,7 +27,7 @@ module InstTypeDecoder(
     typedef enum {I,IStar,S,B,U,J,R} instruction_type;
     instruction_type inst_type;
     always_comb begin
-        case(op_type)
+        case(op_code)
             7'b011_0011:inst_type = R;
             7'b001_0011:inst_type = I;
             7'b010_0011:inst_type = S;
@@ -36,6 +36,7 @@ module InstTypeDecoder(
             7'b110_0111:inst_type = I;
             7'b001_0111:inst_type = U;
             7'b111_0011:inst_type = I;
+            default: inst_type = I;
         endcase
     end
     assign op_type = inst_type;

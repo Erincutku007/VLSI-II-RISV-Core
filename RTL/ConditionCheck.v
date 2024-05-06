@@ -36,6 +36,7 @@ module ConditionCheck(
             3'b100: valid = (N^V);  //Branch if Less Than (signed) 
             3'b110: valid = ~C;     //Branch if Less Than (Unsigned)
             3'b001: valid = ~Z;     //Branch if Not Equal
+            default: valid = 0;
         endcase
     end
     assign condition_valid = valid;

@@ -23,13 +23,15 @@
 module MemStage(
         input clk,rst,
         input wire [31:0]calculated_adr,pc_plus_4_ex,ALU_result,regfileb_ex,
-        input wire [15:0]control_word_ex,
+        input wire [13:0]control_word_ex,
         output wire [31:0] mem_data_out,target_pc,
         output wire [3:0]control_word_mem
     );
-    wire branch_taken,rf_wb,mem_we,pc_src,funct3,pc_src_mem;
+    wire branch_taken,rf_wb,mem_we,pc_src,pc_src_mem;
     wire [1:0] wb_src;
-    assign {branch_taken,rf_wb,mem_we,wb_src,pc_src,funct3} = control_word_ex;
+    wire [2:0] funct3;
+    wire [4:0] rd;
+    assign {branch_taken,rf_wb,mem_we,wb_src,pc_src,rd,funct3} = control_word_ex;
     //mem module instantation
     DataMem #(2**32) dmem (
     .clk(clk),

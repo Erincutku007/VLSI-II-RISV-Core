@@ -21,31 +21,30 @@
 
 
 module ExecuteStage(
-        input wire [18:0]control_word_dec,
+        input wire [23:0]control_word_dec,
         input wire [31:0]pc_plus_4_dec,pc_dec,imm,regfilea,regfileb,
         output wire [31:0]calculated_adr,pc_plus_4_ex,ALU_result,regfileb_ex,
-        output wire [8:0]control_word_ex
+        output wire [13:0]control_word_ex
     );
     wire b_src,adr_adder_a,is_branch,rf_wb,mem_we,pc_src;
     wire [1:0]wb_src;
+    wire [4:0]rd;
     
-    wire branch_taken_ex,rf_wb_ex,mem_we_ex,pc_src_ex,funct3_ex;
-    wire [1:0]wb_src_ex;
+    wire branch_taken_ex;
     
     wire [31:0]A,B,alu_result,adr_adder_a_input;
     wire [2:0]funct3,funct3_masked;
     wire [6:0]funct7,funct7_masked;
     wire [3:0]alu_flags;
     //deconstructing control word
-    assign {b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,funct3,funct7} = control_word_dec;
+    assign {b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,rd,funct3,funct7} = control_word_dec;
     //ALU inputs
     assign A = regfilea;
     assign B = b_src ? imm : regfileb;
     assign funct3_masked = is_branch ? 32'b0 : funct3;
-    assign funct7_masked = funct7 & {1'b0,is_branch,5'b0};
-    assign address_adder_a = adr_adder_a ? pc_dec : regfilea;
-    ALU(
-    .funct7(funct7),
+    assign funct7_masked = funct7 | {1'b0,is_branch,5'b0};
+    ALU alu(
+    .funct7(funct7_masked),
     .funct3(funct3_masked),
     .A(A),
     .B(B),
@@ -56,7 +55,7 @@ module ExecuteStage(
     assign adr_adder_a_input = adr_adder_a ? pc_dec : A;
     Adder address_adder(
         .cin(1'b0),
-        .a(),
+        .a(adr_adder_a_input),
         .b(imm),
         .y(calculated_adr),
         .cout()
@@ -69,7 +68,7 @@ module ExecuteStage(
     );
     //new conrol word
     assign branch_taken_ex = branch_taken & is_branch;
-    assign control_word_ex = {branch_taken_ex,rf_wb_ex,mem_we_ex,wb_src_ex,pc_src_ex,funct3_ex};
+    assign control_word_ex = {branch_taken_ex,rf_wb,mem_we,wb_src,pc_src,rd,funct3};
     //output assignments
     assign pc_plus_4_ex = pc_plus_4_dec;
     assign ALU_result = alu_result;

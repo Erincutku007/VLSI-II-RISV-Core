@@ -30,18 +30,12 @@ module RegFile#(parameter WIDTH = 32,parameter ADRESS_WIDTH = 5,parameter DEPTH 
     );
     reg [WIDTH-1:0] ram_block [DEPTH-1:0];
     integer i = 0;
-    always @(posedge clk or negedge rst) begin
-        if (!rst) begin
-            for (i=0;i<DEPTH;i=i+1)begin
-                ram_block[i] = 0;
-            end
+    always @(posedge clk) begin
+            if (we0 & (wr_addr0 != 5'd0))
+                ram_block[wr_addr0] <= wr_din0;
         end
-        else if (we0 & (wr_addr0 != 5'd0))
-            ram_block[wr_addr0] <= wr_din0;
-    end
-    wire test = we0 & (wr_addr0 != 0);
     always @(*) begin
-        rd_dout0 = ram_block[rd_addr0];
-        rd_dout1 = ram_block[rd_addr1];
+        rd_dout0 = (rd_addr0 == 5'b0) ? 32'b0 : ram_block[rd_addr0];
+        rd_dout1 = (rd_addr1 == 5'b0) ? 32'b0 : ram_block[rd_addr1];
     end
 endmodule
