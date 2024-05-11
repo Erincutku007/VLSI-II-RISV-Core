@@ -20,26 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DecExMem(
+module DecExMemWb(
     input clk,
     input rst,
     input [31:0]instruction,pc_if,pc_plus_4_if,
-    output pc_src_mem,
-    output [31:0]mem_data_out,target_pc
+    output wb_pc_src,
+    output [31:0]wb_target_pc
     );
-    wire branch_taken_ex,rf_wb_ex,mem_we_ex,pc_src_ex,
-    rf_wb;
-    wire [1:0]wb_src_ex,wb_src;
-    wire [2:0]funct3_ex;
+    wire [4:0]wb_rd;
     wire [8:0]control_word_mem;
-    wire [4:0]rd_ex,rd;
-    
     wire [13:0]control_word_ex;
     wire [23:0]control_word_dec;
-    wire [31:0]regfilea,regfileb,imm,pc_dec,pc_plus_4_dec,calculated_adr
-    ,pc_plus_4_ex,regfileb_ex,ALU_result;
-    assign {branch_taken_ex,rf_wb_ex,mem_we_ex,wb_src_ex,pc_src_ex,rd_ex,funct3_ex} = control_word_ex;
-    assign {rf_wb,wb_src,pc_src_mem,rd} = control_word_mem;
+    wire [31:0]regfilea,regfileb,imm,pc_dec,pc_plus_4_dec,calculated_adr,mem_data_out
+    ,pc_plus_4_ex,regfileb_ex,ALU_result,pc_plus_4_mem,ALU_result_mem,target_pc,wb_data;
     
     DecodeStage dec(
     .clk(clk),
@@ -47,9 +40,9 @@ module DecExMem(
     .instruction(instruction),
     .pc_if(pc_if),
     .pc_plus_4_if(pc_plus_4_if),
-    .wb_data(ALU_result),
-    .wadr(rd),
-    .we_wb(rf_wb),
+    .wb_data(wb_data),
+    .wadr(wb_rd),
+    .we_wb(wb_rf_wb),
     .regfilea(regfilea),
     .regfileb(regfileb),
     .imm(imm),
@@ -80,6 +73,20 @@ module DecExMem(
         .control_word_ex(control_word_ex),
         .mem_data_out(mem_data_out),
         .target_pc(target_pc),
+        .pc_plus_4_mem(pc_plus_4_mem),
+        .ALU_result_mem(ALU_result_mem),
         .control_word_mem(control_word_mem)
+    );
+    WriteBackStage wb(
+        .mem_data_out(mem_data_out),
+        .target_pc(target_pc),
+        .pc_plus_4_mem(pc_plus_4_mem),
+        .ALU_result_mem(ALU_result_mem),
+        .control_word_mem(control_word_mem),
+        .wb_pc_src(wb_pc_src),
+        .wb_rf_wb(wb_rf_wb),
+        .wb_rd(wb_rd),
+        .wb_target_pc(wb_target_pc),
+        .wb_data(wb_data)
     );
 endmodule

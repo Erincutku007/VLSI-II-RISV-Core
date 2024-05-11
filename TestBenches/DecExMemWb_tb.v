@@ -20,23 +20,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DecExMem_tb(
+module DecExMemWb_tb(
 
     );
-    wire pc_src_mem;
+    wire wb_pc_src;
     wire [4:0] imem_adr;
     wire [31:0]target_pc;
     reg clk,rst;
     reg [31:0]instruction,pc_if,pc_plus_4_if,target_pc_normalized;
     reg [31:0]ram[31:0];
-    DecExMem DUT(
+    DecExMemWb DUT(
     .clk(clk),
     .rst(rst),
     .instruction(instruction),
     .pc_if(pc_if*4),
     .pc_plus_4_if(pc_plus_4_if*4),
-    .pc_src_mem(pc_src_mem),
-    .target_pc(target_pc)
+    .wb_pc_src(wb_pc_src),
+    .wb_target_pc(target_pc)
     );
     
     assign imem_adr = pc_if[4:0];
@@ -53,7 +53,7 @@ module DecExMem_tb(
     end
     
     always @(posedge clk) begin
-        if (pc_src_mem)
+        if (wb_pc_src)
             pc_if = target_pc_normalized;
         else
             pc_if = pc_if + 1;
@@ -65,7 +65,6 @@ module DecExMem_tb(
         rst = 1;
         #10;
         #200;
-        $display("" != "abc");
         $finish();
     end
 endmodule

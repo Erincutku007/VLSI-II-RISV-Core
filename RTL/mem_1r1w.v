@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,IS_I_MEM = 0)(
+module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,parameter MEMDATA = "")(
         input clk,
         input rst,
         input [ $clog2(DEPTH)+1:0]rd_addr0,wr_addr0,
@@ -35,7 +35,7 @@ module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,IS_I_MEM = 0)(
     always @(posedge clk or negedge rst) begin
         if (!rst) begin
             for (i=0;i<DEPTH;i=i+1)begin
-                ram_block[i] = 0;
+                ram_block[i] <= 0;
             end
         end
         else if (we0)
@@ -47,7 +47,8 @@ module mem_1r1w #(parameter WIDTH = 32,parameter DEPTH = 4,IS_I_MEM = 0)(
     end
     
     initial begin
-        if (IS_I_MEM)
-            $readmemh("program.mem",ram_block);
+        if (MEMDATA != "")
+            $display("veri yukleniyor");
+            $readmemh(MEMDATA,ram_block);
      end
 endmodule

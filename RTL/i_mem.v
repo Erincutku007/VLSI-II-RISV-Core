@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module i_mem(
+module i_mem #(parameter MEM_DATA = "") (
         input clk,
         input rst,
         input [31:0]rd_addr0,wr_addr0,
@@ -29,7 +29,7 @@ module i_mem(
         output [31:0]rd_dout0
     );
     
-    mem_1r1w #(32,16,1) iram(
+    mem_1r1w #(32,16,MEM_DATA) iram(
         .clk(clk),
         .rst(rst),
         .rd_addr0(rd_addr0[6:0]),

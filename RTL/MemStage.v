@@ -24,8 +24,8 @@ module MemStage(
         input clk,rst,
         input wire [31:0]calculated_adr,pc_plus_4_ex,ALU_result,regfileb_ex,
         input wire [13:0]control_word_ex,
-        output wire [31:0] mem_data_out,target_pc,
-        output wire [3:0]control_word_mem
+        output wire [31:0] mem_data_out,target_pc,pc_plus_4_mem,ALU_result_mem,
+        output wire [8:0]control_word_mem
     );
     wire branch_taken,rf_wb,mem_we,pc_src,pc_src_mem;
     wire [1:0] wb_src;
@@ -33,7 +33,7 @@ module MemStage(
     wire [4:0] rd;
     assign {branch_taken,rf_wb,mem_we,wb_src,pc_src,rd,funct3} = control_word_ex;
     //mem module instantation
-    DataMem #(2**32) dmem (
+    DataMem #(.MEM_DEPTH(64),.MEMDATA("dmem.mem")) dmem (
     .clk(clk),
     .rst(rst),
     .rd_addr0(calculated_adr),
@@ -45,6 +45,8 @@ module MemStage(
     );
     //new control word
     assign pc_src_mem = branch_taken & pc_src;
-    assign control_word_mem = {rf_wb,wb_src,pc_src_mem};
+    assign control_word_mem = {rf_wb,wb_src,pc_src_mem,rd};
     assign target_pc = calculated_adr;
+    assign pc_plus_4_mem = pc_plus_4_ex;
+    assign ALU_result_mem = ALU_result;
 endmodule

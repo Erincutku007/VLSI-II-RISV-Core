@@ -62,7 +62,7 @@ module DecodeStage(
     assign rf_wb = arithmetic | mem_load | jump;
     assign mem_we = (opcode == 7'b010_0011);
     assign wb_src = {mem_load,arithmetic};
-    assign pc_src = is_control | (opcode == 7'b001_0111) | (opcode == 7'b011_0111);
+    assign pc_src = jump | (opcode == 7'b001_0111);
     assign adr_a = (opcode == 7'b011_0111);
     //{b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,rd,funct3,funct7};
     assign control_word_dec = {b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,rd,funct3,funct7};

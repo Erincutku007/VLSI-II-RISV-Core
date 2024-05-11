@@ -27,8 +27,8 @@ module ALU(
     output wire [31:0]result,
     output wire [3:0]alu_flags
     );
-    wire sub,cout,less_that_signed,less_that_unsigned,V,C,N,Z;
-    wire [31:0]adder_out,adder_b,left_shift_out,right_shift_out;
+    wire sub,cout,less_than_signed,less_than_unsigned,V,C,N,Z;
+    wire [31:0]adder_out,adder_b,shift_out;
     reg  [31:0]res;
     assign sub = funct7[5] | (funct3 == 3'b010)| (funct3 == 3'b011);
     assign adder_b = sub ? ~B : B;

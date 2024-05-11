@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMem #(parameter MEM_DEPTH=4)(
+module DataMem #(parameter MEM_DEPTH=32,parameter MEMDATA = "")(
     input clk,
     input rst,
     input [$clog2(MEM_DEPTH)+1:0]rd_addr0,wr_addr0,
@@ -34,7 +34,7 @@ module DataMem #(parameter MEM_DEPTH=4)(
     wire [1:0]byte_index_r,byte_index_w;
     wire [4:0]shamt_r,shamt_w;
     localparam adr_width = $clog2(MEM_DEPTH)+2;
-    mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH)) dmem(
+    mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH),.MEMDATA(MEMDATA)) dmem(
     .clk(clk),
     .rst(rst),
     .rd_addr0({rd_addr0[adr_width-1:2],2'h0}),
