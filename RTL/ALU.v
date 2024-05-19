@@ -41,14 +41,14 @@ module ALU(
     
     assign alu_flags = {V,C,N,Z};
     
-    Adder add(
+    CLA add(
         .cin(sub),
-        .a(A),
-        .b(adder_b),
-        .y(adder_out),
+        .d1(A),
+        .d2(adder_b),
+        .sum(adder_out),
         .cout(cout)
     );
-    
+
     Shifter shifter (
         .a(A),
         .b(B[4:0]),
