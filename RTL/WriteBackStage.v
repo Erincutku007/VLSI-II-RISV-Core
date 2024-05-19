@@ -21,7 +21,7 @@
 
 
 module WriteBackStage(
-        input wire [31:0] mem_data_out,target_pc,pc_plus_4_mem,ALU_result_mem,
+        input wire [31:0] mem_data_out,target_pc,ALU_result_mem,
         input wire [8:0]control_word_mem,
         output wire wb_pc_src,wb_rf_wb,
         output wire [4:0] wb_rd,
@@ -34,7 +34,7 @@ module WriteBackStage(
     assign {rf_wb,wb_src,pc_src,rd} = control_word_mem;
     always@(*) begin
         case(wb_src)
-        2'b00: selected_data = pc_plus_4_mem;
+        2'b00: selected_data = ALU_result_mem;
         2'b01: selected_data = ALU_result_mem;
         2'b10: selected_data = mem_data_out;
         default: selected_data = 32'b0; 

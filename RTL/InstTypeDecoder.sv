@@ -35,6 +35,7 @@ module InstTypeDecoder(
             7'b110_1111:inst_type = J;
             7'b110_0111:inst_type = I;
             7'b001_0111:inst_type = U;
+            7'b011_0111:inst_type = U;
             7'b111_0011:inst_type = I;
             default: inst_type = I;
         endcase

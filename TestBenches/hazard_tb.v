@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 04/28/2024 01:09:26 PM
+// Create Date: 05/13/2024 03:20:53 PM
 // Design Name: 
-// Module Name: Adder
+// Module Name: hazard_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,10 +19,20 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module Adder (input wire cin,
-              input [31:0] a, b,
-              output cout,
-              output [31:0] y);
-    assign {cout,y} = a+b+cin;
-endmodule
 
+module hazard_tb(
+
+    );
+    HazardUnit DUT(
+        .we_ex(1),
+        .we_mem(1),
+        .rd_ex(0),
+        .rd_mem(0),
+        .rs1_dec(0),
+        .rs2_dec(0),
+        .RAW_hazards()
+    );
+    initial begin
+        #100;
+    end
+endmodule

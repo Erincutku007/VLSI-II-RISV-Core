@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 04/28/2024 01:09:26 PM
+// Create Date: 05/05/2024 07:34:24 PM
 // Design Name: 
-// Module Name: Adder
+// Module Name: DecEx_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,10 +19,27 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module Adder (input wire cin,
-              input [31:0] a, b,
-              output cout,
-              output [31:0] y);
-    assign {cout,y} = a+b+cin;
-endmodule
 
+module core_pipelined_tb(
+
+    );
+
+    reg clk,rst;
+    CorePipelined DUT(
+    .clk(clk),
+    .rst(rst),
+    .wb_data_o()
+    );
+    
+    always begin
+        clk = 0;
+        forever #10 clk = ~clk;
+    end
+    
+    initial begin
+        rst = 0;
+        #20;
+        rst = 1;
+        #200;
+    end
+endmodule

@@ -28,12 +28,13 @@ module i_mem #(parameter MEM_DATA = "") (
         input we0,
         output [31:0]rd_dout0
     );
-    
-    mem_1r1w #(32,16,MEM_DATA) iram(
+    localparam depth = 256;
+    localparam adr_msb = $clog2(depth)+2;
+    mem_1r1w_sram #(32,depth,MEM_DATA) iram(
         .clk(clk),
         .rst(rst),
-        .rd_addr0(rd_addr0[6:0]),
-        .wr_addr0(wr_addr0[6:0]),
+        .rd_addr0(rd_addr0[adr_msb:0]),
+        .wr_addr0(wr_addr0[adr_msb:0]),
         .wr_din0(wr_din0),
         .we0(we0),
         .rd_dout0(rd_dout0)

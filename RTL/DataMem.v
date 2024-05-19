@@ -34,11 +34,11 @@ module DataMem #(parameter MEM_DEPTH=32,parameter MEMDATA = "")(
     wire [1:0]byte_index_r,byte_index_w;
     wire [4:0]shamt_r,shamt_w;
     localparam adr_width = $clog2(MEM_DEPTH)+2;
-    mem_1r1w #(.WIDTH(32),.DEPTH(MEM_DEPTH),.MEMDATA(MEMDATA)) dmem(
+    mem_1r1w_sram #(.WIDTH(32),.DEPTH(MEM_DEPTH),.MEMDATA(MEMDATA)) dmem(
     .clk(clk),
     .rst(rst),
-    .rd_addr0({rd_addr0[adr_width-1:2],2'h0}),
-    .wr_addr0({wr_addr0[adr_width-1:2],2'h0}),
+    .rd_addr0({rd_addr0[31:2],2'h0}),
+    .wr_addr0({wr_addr0[31:2],2'h0}),
     .wr_din0(mem_write_in),
     .we0(we0),
     .rd_dout0(memory_read_val_raw)

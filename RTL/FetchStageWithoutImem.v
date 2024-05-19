@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module FetchStage(
+module FetchStageWithoutImem(
         input clk,rst,stall_fetch,forward_adr_from_ex,
         input [31:0]target_pc,
-        output [31:0]PC_if,PC_plus_four_if,instruction_if
+        output [31:0]PC_if,PC_plus_four_if
     );
     wire [31:0]PC_plus_four,PC_next,PC,instruction;
     
@@ -50,5 +50,4 @@ module FetchStage(
     
     assign PC_plus_four_if = PC_plus_four;
     assign PC_if = PC;
-    assign instruction_if = instruction;
 endmodule

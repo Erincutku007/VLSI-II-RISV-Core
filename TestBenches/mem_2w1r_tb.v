@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 04/01/2024 10:19:01 PM
+// Create Date: 05/16/2024 09:40:18 PM
 // Design Name: 
-// Module Name: ram_tb
+// Module Name: mem_2w1r_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,40 +20,41 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module dmem_tb(
+module mem_2w1r_tb(
 
     );
     reg clk,rst,we0;
-    reg [31:0]rd_addr0,wr_addr0;
-    reg [31:0]wr_din0;
-    reg [2:0]wr_strb;
-    wire [31:0]rd_dout0;
-    DataMem #() DUT (
+    reg [31:0] rd_addr0,rd_addr1,wr_addr0,wr_din0;
+    wire [31:0] rd_dout0,rd_dout1;
+    mem_2r1w #(.DEPTH(16)) DUT(
         .clk(clk),
         .rst(rst),
         .rd_addr0(rd_addr0),
+        .rd_addr1(rd_addr1),
         .wr_addr0(wr_addr0),
         .wr_din0(wr_din0),
         .we0(we0),
-        .wr_strb(wr_strb),
-        .rd_dout0(rd_dout0)
+        .rd_dout0(rd_dout0),
+        .rd_dout1(rd_dout1)
     );
     always
         begin
         clk = 0;
         forever #10 clk = ~clk;
     end
-    
+    integer i;
     initial begin
-        rst = 0;
-        #30;
         rst = 1;
-        rd_addr0=0;
-        wr_addr0=0;
-        wr_din0=32'hF0_F0_0F_0F;
-        wr_strb = 3'b010;
         we0 = 1;
-        #40;
+
+        #10;
+        for (i=0;i<16;i=i+1) begin
+                wr_addr0=i*4;
+                wr_din0 =i;
+                @(posedge clk);
+        end
+        we0 = 0;
+        rd_addr0 = 0;
+        rd_addr1 = 1;
     end
-    
 endmodule

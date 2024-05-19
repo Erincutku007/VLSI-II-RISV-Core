@@ -30,7 +30,7 @@ module ALU(
     wire sub,cout,less_than_signed,less_than_unsigned,V,C,N,Z;
     wire [31:0]adder_out,adder_b,shift_out;
     reg  [31:0]res;
-    assign sub = funct7[5] | (funct3 == 3'b010)| (funct3 == 3'b011);
+    assign sub = funct7[5];
     assign adder_b = sub ? ~B : B;
     assign V = (A[31]^adder_out[31]) & ~(A[31]^B[31]^sub);
     assign C = cout;
