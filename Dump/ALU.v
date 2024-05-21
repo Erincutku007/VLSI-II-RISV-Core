@@ -41,7 +41,7 @@ module ALU(
     
     assign alu_flags = {V,C,N,Z};
     
-    CLA add(
+    Adder add(
         .cin(sub),
         .d1(A),
         .d2(adder_b),
