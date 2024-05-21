@@ -25,19 +25,21 @@ module ImmExtender(
         input wire[2:0]op_type,
         output wire [31:0]imm_out
     );
-    typedef enum {I,IStar,S,B,U,J,R} instruction_type;
-    instruction_type inst_type;
+//I=0
+//S=2
+//B=3
+//U=4
+//J=5
+//R=6
     reg [31:0]imm;
     
-    assign inst_type = instruction_type'(op_type);
-    
     always_comb begin
-        case(inst_type)
-            I: imm = { {21{inst[31]}} ,inst[30:25],inst[24:21],inst[20]};
-            S: imm = { {21{inst[31]}} ,inst[30:25],inst[11:8],inst[7]};
-            B: imm = { {20{inst[31]}} ,inst[7],inst[30:25],inst[11:8],1'b0};
-            U: imm = { inst[31],inst[30:20],inst[19:12],12'b0};
-            J: imm = { {12{inst[31]}} ,inst[19:12],inst[20],inst[30:25],inst[24:21],1'b0};
+        case(op_type)
+            3'h0: imm = { {21{inst[31]}} ,inst[30:25],inst[24:21],inst[20]};
+            3'h2: imm = { {21{inst[31]}} ,inst[30:25],inst[11:8],inst[7]};
+            3'h3: imm = { {20{inst[31]}} ,inst[7],inst[30:25],inst[11:8],1'b0};
+            3'h4: imm = { inst[31],inst[30:20],inst[19:12],12'b0};
+            3'h5: imm = { {12{inst[31]}} ,inst[19:12],inst[20],inst[30:25],inst[24:21],1'b0};
             default: imm = 32'b0;
         endcase
     end

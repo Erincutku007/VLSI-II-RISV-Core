@@ -22,7 +22,6 @@
 
 module RegFile#(parameter WIDTH = 32,parameter ADRESS_WIDTH = 5,parameter DEPTH = 32)(
         input clk,
-        input rst,
         input [ADRESS_WIDTH-1:0]rd_addr0,rd_addr1,wr_addr0,
         input [WIDTH-1:0]wr_din0,
         input we0,

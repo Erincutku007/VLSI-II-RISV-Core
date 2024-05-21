@@ -26,7 +26,7 @@ module ExecuteStage(
         output wire [31:0]calculated_adr,ALU_result,regfileb_ex,
         output wire [13:0]control_word_ex
     );
-    wire r_i_op_except_srai,auipc_or_lui,r_i_op,auipc,is_jump,b_src,adr_adder_a,is_branch,rf_wb,mem_we,pc_src;
+    wire auipc_or_lui,r_i_op,auipc,is_jump,b_src,adr_adder_a,is_branch,rf_wb,mem_we,pc_src;
     wire [1:0]wb_src;
     wire [4:0]rd;
     
@@ -34,7 +34,7 @@ module ExecuteStage(
     
     wire [31:0]A,B,alu_result,adr_adder_a_input,ALU_result_or_4;
     wire [2:0]funct3,funct3_masked;
-    wire [6:0]funct7,funct7_masked;
+    wire [6:0]funct7_masked;
     wire [3:0]alu_flags;
     //deconstructing control word
     assign {arithmetic_set,auipc_or_lui,r_i_op,auipc,is_jump,b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,rd,funct3,funct7_masked} = control_word_dec;

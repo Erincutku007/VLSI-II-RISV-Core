@@ -61,6 +61,7 @@ module DataMemWithoutMem #(parameter MEM_DEPTH=32,parameter MEMDATA = "")(
             2'b10: byte_mask = 4'b0010;
             2'b10: byte_mask = 4'b0100;
             2'b11: byte_mask = 4'b1000;
+            default:byte_mask = 4'h0;
         endcase
     end
     

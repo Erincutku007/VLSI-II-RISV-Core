@@ -22,8 +22,6 @@
 
 module DecodeStage(
     input clk,
-    input rst,
-    input [3:0]RAW_hazards,
     input [31:0]instruction,pc_if,pc_plus_4_if,wb_data,
     input [4:0]wadr,
     input we_wb,
@@ -52,11 +50,6 @@ module DecodeStage(
     assign funct7_masked = funct7 & {1'b1,~ (r_i_op_except_srai | auipc_or_lui) ,5'b1_1111} | {1'b0,(is_branch | arithmetic_set),5'b0_0000};
     assign control_word_dec = {arithmetic_set,auipc_or_lui,r_i_op,auipc,is_jump,b_src,adr_adder_a,is_branch,rf_wb,mem_we,wb_src,pc_src,rd,funct3,funct7_masked};
     //hazard bus decontruction
-    wire rs1_ex_hazard,rs2_ex_hazard,rs1_mem_hazard,rs2_mem_hazard;
-    wire raw_dec_wb_a,raw_dec_wb_b;
-    wire [2:0]raw_dec_a,raw_dec_b;
-    wire [1:0]hazard_sel_a,hazard_sel_b;
-    
     
     DecodeControlword controlworddecoder(
         .funct3(funct3),
@@ -77,7 +70,6 @@ module DecodeStage(
     
     RegFile rf(
         .clk(clk),
-        .rst(rst),
         .rd_addr0(rs1),
         .rd_addr1(rs2),
         .wr_addr0(wadr),
@@ -117,15 +109,13 @@ module DecodeControlword(
         output auipc_or_lui,
         output arithmetic_set
     );
-    wire lui,mem,mem_load,arithmetic,is_control,adr_a;
+    wire lui,mem,mem_load,arithmetic;
     //internal control signals
-    assign auipc = (opcode == 7'b001_0111);
     assign lui = (opcode == 7'b011_0111);
     assign mem = (opcode == 7'b000_0011) | (opcode == 7'b010_0011);
     assign arithmetic = (opcode == 7'b011_0011) | (opcode == 7'b001_0011);
     assign mem_load = (opcode == 7'b000_0011);
     assign is_control_expect_jalr = (opcode == 7'b110_0011) | (opcode == 7'b110_1111);
-    assign is_control = adr_adder_a | (opcode == 7'b110_0111);
     //control signal assignments
     assign arithmetic_set = arithmetic & ((funct3 == 3'b010)| (funct3 == 3'b011));
     assign auipc_or_lui = auipc | lui;

@@ -68,15 +68,12 @@ module SingleCycleWithoutMemory(
     assign dec_ex_reg_in = {decode_valid,regfilea_dec,regfileb_dec,imm_dec,pc_dec,pc_plus_4_dec,control_word_dec};
     //hazard handling wires
     wire wb_valid;
-    wire [3:0] RAW_hazards;
     wire [31:0]ALU_result_ex,ALU_result_mem;
     wire [4:0] rs1_dec,rs2_dec;
     //wire [3:0] RAW_mem_hazards;
     
     DecodeStage dec(
     .clk(clk),
-    .rst(rst),
-    .RAW_hazards(RAW_hazards),
     .instruction(instruction_to_dec),
     .pc_if(pc_if_to_dec),
     .pc_plus_4_if(pc_plus_4_if_to_dec),
@@ -141,8 +138,6 @@ module SingleCycleWithoutMemory(
     assign mem_read_adr = calculated_adr_ex_to_mem;
     assign mem_write_adr = calculated_adr_ex_to_mem;
     MemStageWithoutMemory mem(
-        .clk(clk),
-        .rst(1'b1),
         .calculated_adr(calculated_adr_ex_to_mem),
         .ALU_result(ALU_result_ex_to_mem),
         .regfileb_ex(regfileb_ex_to_mem),
