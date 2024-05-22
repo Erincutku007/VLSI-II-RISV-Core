@@ -30,7 +30,7 @@ module SingleCycleWithoutMemory(
     
     //writeback output signals
     wire wb_pc_src_wb;
-    wire [1:0]wb_rf_wb;
+    wire wb_rf_wb;
     wire [4:0]wb_rd_wb;
     wire [31:0]wb_target_pc_wb,wb_data_wb,calculated_adr_ex;
     assign wb_data_o = wb_data_wb;

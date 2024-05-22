@@ -33,7 +33,7 @@ module ImmExtender(
 //R=6
     reg [31:0]imm;
     
-    always_comb begin
+    always@(*) begin
         case(op_type)
             3'h0: imm = { {21{inst[31]}} ,inst[30:25],inst[24:21],inst[20]};
             3'h2: imm = { {21{inst[31]}} ,inst[30:25],inst[11:8],inst[7]};

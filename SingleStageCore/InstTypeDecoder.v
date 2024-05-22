@@ -31,7 +31,7 @@ module InstTypeDecoder(
 //J=5
 //R=6
     reg [2:0]inst_type;
-    always_comb begin
+    always@(*) begin
         case(op_code)
             7'b011_0011:inst_type = 3'h6;//R;
             7'b001_0011:inst_type = 3'h0;//I;
