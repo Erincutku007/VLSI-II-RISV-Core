@@ -43,9 +43,9 @@ module ALU(
     
     Adder add(
         .cin(sub),
-        .d1(A),
-        .d2(adder_b),
-        .sum(adder_out),
+        .a(A),
+        .b(adder_b),
+        .y(adder_out),
         .cout(cout)
     );
 

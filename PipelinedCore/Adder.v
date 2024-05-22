@@ -21,51 +21,51 @@
 
 module Adder( 
     input cin, 
-    input [31:0] d1,
-    input [31:0] d2,
+    input [31:0] a,
+    input [31:0] b,
     output cout,
-    output [31:0] sum
+    output [31:0] y
     ); //32 bit CLA using 8 4-bit CLA adderes
 
     wire c0,c1,c2,c3,c4,c5,c6;
-    reg [31:0] b;
+    reg [31:0] k;
     
     always@(*)
     begin
         if(cin==1)
-            b<=-d2-1;
+            k<=-b-1;
     else
-        b<=d2;
+        k<=b;
     end
 
-    cla4 n1(d1[3:0],b[3:0],cin,sum[3:0],c0);
-    cla4 n2(d1[7:4],b[7:4],c0,sum[7:4],c1);
-    cla4 n3(d1[11:8],b[11:8],c1,sum[11:8],c2);
-    cla4 n4(d1[15:12],b[15:12],c2,sum[15:12],c3);
-    cla4 n5(d1[19:16],b[19:16],c3,sum[19:16],c4);
-    cla4 n6(d1[23:20],b[23:20],c4,sum[23:20],c5);
-    cla4 n7(d1[27:24],b[27:24],c5,sum[27:24],c6);
-    cla4 n8(d1[31:28],b[31:28],c6,sum[31:28],cout);
+    cla4 n1(a[3:0],k[3:0],cin,y[3:0],c0);
+    cla4 n2(a[7:4],k[7:4],c0,y[7:4],c1);
+    cla4 n3(a[11:8],k[11:8],c1,y[11:8],c2);
+    cla4 n4(a[15:12],k[15:12],c2,y[15:12],c3);
+    cla4 n5(a[19:16],k[19:16],c3,y[19:16],c4);
+    cla4 n6(a[23:20],k[23:20],c4,y[23:20],c5);
+    cla4 n7(a[27:24],k[27:24],c5,y[27:24],c6);
+    cla4 n8(a[31:28],k[31:28],c6,y[31:28],cout);
  endmodule
 
 //4 Bit CLA code
 
-module cla4(a,b,cin,s,cout);
-input[3:0] a,b;
+module cla4(f,k,cin,s,cout);
+input[3:0] f,k;
 input cin;
 output cout;
 output[3:0] s;
 wire[3:0] g,p;
 wire[13:0] z;
 
-xor21 x1 (.a1(a[0]),.a2(b[0]),.z(p[0]));
-and21 x2 (.a1(a[0]),.a2(b[0]),.z(g[0]));
-xor21 x3 (.a1(a[1]),.a2(b[1]),.z(p[1]));
-and21 x4 (.a1(a[1]),.a2(b[1]),.z(g[1]));
-xor21 x5 (.a1(a[2]),.a2(b[2]),.z(p[2]));
-and21 x6 (.a1(a[2]),.a2(b[2]),.z(g[2]));
-xor21 x7 (.a1(a[3]),.a2(b[3]),.z(p[3]));
-and21 x8 (.a1(a[3]),.a2(b[3]),.z(g[3]));
+xor21 x1 (.a1(f[0]),.a2(k[0]),.z(p[0]));
+and21 x2 (.a1(f[0]),.a2(k[0]),.z(g[0]));
+xor21 x3 (.a1(f[1]),.a2(k[1]),.z(p[1]));
+and21 x4 (.a1(f[1]),.a2(k[1]),.z(g[1]));
+xor21 x5 (.a1(f[2]),.a2(k[2]),.z(p[2]));
+and21 x6 (.a1(f[2]),.a2(k[2]),.z(g[2]));
+xor21 x7 (.a1(f[3]),.a2(k[3]),.z(p[3]));
+and21 x8 (.a1(f[3]),.a2(k[3]),.z(g[3]));
 xor21 x9 (.a1(cin),.a2(p[0]),.z(s[0]));
 and21 x10 (.a1(cin),.a2(p[0]),.z(z[0]));
 or21 x11 (.a1(z[0]),.a2(g[0]),.z(z[1]));

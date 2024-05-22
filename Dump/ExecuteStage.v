@@ -53,11 +53,11 @@ module ExecuteStage(
     );
     //address adder inputs
     assign adr_adder_a_input = adr_adder_a ? pc_dec : A;
-    CLA address_adder(
+    Adder address_adder(
         .cin(1'b0),
-        .d1(adr_adder_a_input),
-        .d2(imm),
-        .sum(calculated_adr),
+        .a(adr_adder_a_input),
+        .b(imm),
+        .y(calculated_adr),
         .cout()
     );
     //condition check
