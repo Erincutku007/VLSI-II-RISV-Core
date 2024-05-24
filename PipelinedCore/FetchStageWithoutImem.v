@@ -30,15 +30,6 @@ module FetchStageWithoutImem(
     assign PC_plus_four = PC + 32'd4;
     assign PC_next = forward_adr_from_ex ? target_pc : PC_plus_four ;
     
-    i_mem #("inst.mem") inst_mem (
-        .clk(clk),
-        .rst(1'b1),
-        .rd_addr0(PC),
-        .wr_addr0(),
-        .wr_din0(),
-        .we0(1'b0),
-        .rd_dout0(instruction)
-    );
     
     FlipFlopEnable pc_ff (
         .clk(clk),

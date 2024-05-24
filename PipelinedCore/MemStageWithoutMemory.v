@@ -21,7 +21,6 @@
 
 
 module MemStageWithoutMemory(
-        input clk,rst,
         input wire [31:0]calculated_adr,ALU_result,regfileb_ex,data_read_from_memory,
         input wire [13:0]control_word_ex,
         output wire [31:0] mem_write_in,target_pc,ALU_result_mem,memory_stage_data,

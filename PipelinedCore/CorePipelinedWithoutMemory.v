@@ -39,7 +39,7 @@ module CorePipelinedWithoutMemory(
     
     //writeback output signals
     wire wb_pc_src_wb;
-    wire [1:0]wb_rf_wb;
+    wire wb_rf_wb;
     wire [4:0]wb_rd_wb;
     wire [31:0]wb_target_pc_wb,wb_data_wb,calculated_adr_ex;
     assign wb_data_o = wb_data_wb;
@@ -178,8 +178,6 @@ module CorePipelinedWithoutMemory(
     assign mem_read_adr = calculated_adr_ex_to_mem;
     assign mem_write_adr = calculated_adr_ex_to_mem;
     MemStageWithoutMemory mem(
-        .clk(clk),
-        .rst(1'b1),
         .calculated_adr(calculated_adr_ex_to_mem),
         .ALU_result(ALU_result_ex_to_mem),
         .regfileb_ex(regfileb_ex_to_mem),

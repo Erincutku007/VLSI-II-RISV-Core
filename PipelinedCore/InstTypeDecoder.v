@@ -24,20 +24,25 @@ module InstTypeDecoder(
     input wire[6:0]op_code,
     output wire[2:0]op_type
     );
-    typedef enum {I,IStar,S,B,U,J,R} instruction_type;
-    instruction_type inst_type;
-    always_comb begin
+//I=0
+//S=2
+//B=3
+//U=4
+//J=5
+//R=6
+    reg [2:0]inst_type;
+    always@(*) begin
         case(op_code)
-            7'b011_0011:inst_type = R;
-            7'b001_0011:inst_type = I;
-            7'b010_0011:inst_type = S;
-            7'b110_0011:inst_type = B;
-            7'b110_1111:inst_type = J;
-            7'b110_0111:inst_type = I;
-            7'b001_0111:inst_type = U;
-            7'b011_0111:inst_type = U;
-            7'b111_0011:inst_type = I;
-            default: inst_type = I;
+            7'b011_0011:inst_type = 3'h6;//R;
+            7'b001_0011:inst_type = 3'h0;//I;
+            7'b010_0011:inst_type = 3'h2;//S;
+            7'b110_0011:inst_type = 3'h3;//B;
+            7'b110_1111:inst_type = 3'h5;//J;
+            7'b110_0111:inst_type = 3'h0;//I;
+            7'b001_0111:inst_type = 3'h4;//U;
+            7'b011_0111:inst_type = 3'h4;//U;
+            7'b111_0011:inst_type = 3'h0;//I;
+            default: inst_type = 3'h0;
         endcase
     end
     assign op_type = inst_type;
