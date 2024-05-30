@@ -23,8 +23,8 @@ module ALU_tb ();
     //in order to simulate on gtkwave
     initial 
     begin
-        $dumpfile ("ALU_TB.vcd");
-        $dumpvars (0, ALU_tb);
+        $dumpfile ("PC_TB.vcd");
+        $dumpvars (0, PC_tb);
     end
 
     initial begin
