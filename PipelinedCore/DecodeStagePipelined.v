@@ -139,7 +139,6 @@ module DecodeControlword(
     );
     wire lui,mem,mem_load,arithmetic,is_control,adr_a;
     //internal control signals
-    assign auipc = (opcode == 7'b001_0111);
     assign lui = (opcode == 7'b011_0111);
     assign mem = (opcode == 7'b000_0011) | (opcode == 7'b010_0011);
     assign arithmetic = (opcode == 7'b011_0011) | (opcode == 7'b001_0011);
