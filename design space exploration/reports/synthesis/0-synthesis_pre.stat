@@ -1,0 +1,29 @@
+
+64. Printing statistics.
+
+=== CorePipelinedWithoutMemory ===
+
+   Number of wires:               5921
+   Number of wire bits:           8082
+   Number of public wires:          88
+   Number of public wire bits:    2247
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               7665
+     $_ANDNOT_                    1047
+     $_AND_                         61
+     $_DFFE_PN0N_                  125
+     $_DFFE_PN0P_                    2
+     $_DFFE_PP_                   1024
+     $_DFF_PN0_                    360
+     $_DLATCH_N_                     3
+     $_MUX_                       2720
+     $_NAND_                        64
+     $_NOR_                        106
+     $_NOT_                       1117
+     $_ORNOT_                       93
+     $_OR_                         692
+     $_XNOR_                        10
+     $_XOR_                        241
+
